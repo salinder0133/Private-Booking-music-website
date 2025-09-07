@@ -315,3 +315,11 @@ prevBtn.addEventListener('click', () => {
   let prevIndex = (currentPlayerIndex - 1 + players.length) % players.length;
   playPlayerAtIndex(prevIndex);
 });
+
+
+// ✅ Hamburger menu close on link click
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('menu-toggle').checked = false;
+  });
+});
