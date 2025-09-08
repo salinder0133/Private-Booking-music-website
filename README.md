@@ -16,3 +16,28 @@ Visit the live site here:
 👉 [https://salinder0133.github.io/Private-Booking-music-website/](https://salinder0133.github.io/Private-Booking-music-website/)
 
 ## Folder Structure
+  root/
+  │
+  ├─ index.html
+  ├─ script.js
+  ├─ style.css
+  ├─ photos/
+  │   ├─ about/
+  │   │   └─ (photos for About page)
+  │   ├─ gallery/
+  │   │   └─ (photos for Gallery page)
+  │   ├─ music/
+  │   │   └─ (photos for Music page)
+  │   ├─ (4 photos directly inside photos/ for Home page)
+
+
+---
+
+## 📜 License
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)  
+
+This project is licensed under the [MIT License](./LICENSE).  
+Copyright (c) 2025 **Salinder0133**  
+
+You are free to use, modify, and distribute this project for personal or commercial purposes.  
+**Credit is required** – please retain the copyright notice.
