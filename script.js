@@ -333,15 +333,6 @@ prevBtn.addEventListener('click', () => {
 });
 
 
-
-
-
-
-
-
-
-
-
 // Global play/pause button click
 playPauseBtnGlobal.addEventListener('click', () => {
   const audio = players[currentPlayerIndex].querySelector('.track');
@@ -378,4 +369,3 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     document.getElementById('menu-toggle').checked = false;
   });
 });
-
