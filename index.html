@@ -64,16 +64,17 @@
 
           <!-- 🎵 Custom Styled Audio Player -->
           <div class="custom-audio-player">
-            <button class="btn playPauseBtn">▶️ Play</button>
+            <div class="time-display">
+              <span class="current-time">0:00</span>
+            </div>
             <input type="range" class="seekBar" min="0" max="100" value="0" />
+            <button class="btn playPauseBtn">▶️ Play</button>
 
             <!-- Audio (hidden) -->
             <audio class="track">
               <source src="photos/music/jhol.mp3" type="audio/mpeg" />
               Your browser does not support the audio element.
             </audio>
-
-
           </div>
         </div>
 
@@ -81,12 +82,13 @@
           <img src="photos/music/music2.jpeg" />
           <h3>Dil Ibaadat</h3>
 
-          <!-- 🎵 Custom Styled Audio Player -->
           <div class="custom-audio-player">
-            <button class="btn playPauseBtn">▶️ Play</button>
+            <div class="time-display">
+              <span class="current-time">0:00</span>
+            </div>
             <input type="range" class="seekBar" min="0" max="100" value="0" />
+            <button class="btn playPauseBtn">▶️ Play</button>
 
-            <!-- Audio (hidden) -->
             <audio class="track">
               <source src="photos/music/Dil Ibaadat.mp3" type="audio/mpeg" />
               Your browser does not support the audio element.
@@ -98,12 +100,13 @@
           <img src="photos/music/music3.jpeg" />
           <h3>Fakira</h3>
 
-          <!-- 🎵 Custom Styled Audio Player -->
           <div class="custom-audio-player">
-            <button class="btn playPauseBtn">▶️ Play</button>
+            <div class="time-display">
+              <span class="current-time">0:00</span>
+            </div>
             <input type="range" class="seekBar" min="0" max="100" value="0" />
+            <button class="btn playPauseBtn">▶️ Play</button>
 
-            <!-- Audio (hidden) -->
             <audio class="track">
               <source src="photos/music/Fakira.mp3" type="audio/mpeg" />
               Your browser does not support the audio element.
@@ -115,21 +118,22 @@
           <img src="photos/music/music4.jpeg" />
           <h3>Tu Hi Haqeeqat</h3>
 
-          <!-- 🎵 Custom Styled Audio Player -->
           <div class="custom-audio-player">
-            <button class="btn playPauseBtn">▶️ Play</button>
+            <div class="time-display">
+              <span class="current-time">0:00</span>
+            </div>
             <input type="range" class="seekBar" min="0" max="100" value="0" />
+            <button class="btn playPauseBtn">▶️ Play</button>
 
-            <!-- Audio (hidden) -->
             <audio class="track">
               <source src="photos/music/Tu Hi Haqeeqat.mp3" type="audio/mpeg" />
               Your browser does not support the audio element.
             </audio>
           </div>
-        </div>     
-        
-        <!-- naya song add-->
+        </div>
+
       </div>
+
       <!-- 🎛 Global Audio Controls (Only Buttons) -->
       <div style="text-align: center; margin-top: 80px;">
         <button id="prevBtn">⏮ Previous</button>
@@ -138,7 +142,6 @@
 
         <audio id="globalPlayer" style="display: none;"></audio>
       </div>
-
     </section>
 
     <section id="shows">
@@ -250,5 +253,6 @@
 
   <script src="script.js"></script>
 </body>
+
 
 </html>
