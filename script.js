@@ -207,37 +207,44 @@ const playPauseBtnGlobal = document.getElementById('playPauseBtn');
 const nextBtn = document.getElementById('nextBtn');
 const prevBtn = document.getElementById('prevBtn');
 
-let currentPlayerIndex = 0; // Start with first player
+let currentPlayerIndex = 0;
 
-// Initialize each player: set seekBar max, sync buttons etc.
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+}
+
 players.forEach((player, index) => {
   const audio = player.querySelector('.track');
   const playPauseBtn = player.querySelector('.playPauseBtn');
   const seekBar = player.querySelector('.seekBar');
+  const currentTimeEl = player.querySelector('.current-time');
+  const durationEl = player.querySelector('.duration');
 
-  // Set seek bar max when metadata loaded
   audio.addEventListener('loadedmetadata', () => {
-    seekBar.max = audio.duration;
+    seekBar.max = Math.floor(audio.duration); // ✅ set max as integer seconds
+    if (durationEl) durationEl.textContent = formatTime(audio.duration);
   });
 
-  // Play/pause for individual player
+  // Play/Pause individual player
   playPauseBtn.addEventListener('click', () => {
     if (audio.paused) {
       // Pause all other players
       players.forEach((p, i) => {
         const a = p.querySelector('.track');
         const btn = p.querySelector('.playPauseBtn');
+        const ct = p.querySelector('.current-time');
         if (i !== index) {
           a.pause();
           a.currentTime = 0;
           btn.textContent = '▶️ Play';
+          if (ct) ct.textContent = "0:00";
         }
       });
-
       audio.play();
       playPauseBtn.textContent = '⏸ Pause';
-
-      currentPlayerIndex = index; // Update current playing index
+      currentPlayerIndex = index;
       updateGlobalPlayPauseBtn();
     } else {
       audio.pause();
@@ -246,35 +253,46 @@ players.forEach((player, index) => {
     }
   });
 
-  // Update seek bar as audio plays
+  // Update slider & current time
   audio.addEventListener('timeupdate', () => {
-    seekBar.value = audio.currentTime;
+    seekBar.value = Math.floor(audio.currentTime);
+    if (currentTimeEl) currentTimeEl.textContent = formatTime(audio.currentTime);
   });
 
-  // Seek audio when input changed
+  // Seek audio with slider
   seekBar.addEventListener('input', () => {
     audio.currentTime = seekBar.value;
+    // ✅ Stop audio if slider reaches end
+    if (audio.currentTime >= audio.duration) {
+      audio.pause();
+      audio.currentTime = 0;
+      seekBar.value = 0;
+      playPauseBtn.textContent = '▶️ Play';
+      if (currentTimeEl) currentTimeEl.textContent = "0:00";
+      updateGlobalPlayPauseBtn();
+    }
   });
 
-  // When audio ends, reset button text
   audio.addEventListener('ended', () => {
     playPauseBtn.textContent = '▶️ Play';
     seekBar.value = 0;
+    if (currentTimeEl) currentTimeEl.textContent = "0:00";
     updateGlobalPlayPauseBtn();
   });
 });
 
-// Global play/pause button function
+// Global Play/Pause Button
 function updateGlobalPlayPauseBtn() {
   const audio = players[currentPlayerIndex].querySelector('.track');
   playPauseBtnGlobal.textContent = audio.paused ? '▶️ Play' : '⏸ Pause';
 }
 
-// Play specific player and pause others
+// Play specific player & pause others
 function playPlayerAtIndex(index) {
   players.forEach((player, i) => {
     const audio = player.querySelector('.track');
     const btn = player.querySelector('.playPauseBtn');
+    const currentTimeEl = player.querySelector('.current-time');
     if (i === index) {
       audio.play();
       btn.textContent = '⏸ Pause';
@@ -282,11 +300,47 @@ function playPlayerAtIndex(index) {
       audio.pause();
       audio.currentTime = 0;
       btn.textContent = '▶️ Play';
+      if (currentTimeEl) currentTimeEl.textContent = "0:00";
     }
   });
   currentPlayerIndex = index;
   updateGlobalPlayPauseBtn();
 }
+
+// Global Controls
+playPauseBtnGlobal.addEventListener('click', () => {
+  const audio = players[currentPlayerIndex].querySelector('.track');
+  const btn = players[currentPlayerIndex].querySelector('.playPauseBtn');
+  if (audio.paused) {
+    audio.play();
+    btn.textContent = '⏸ Pause';
+    playPauseBtnGlobal.textContent = '⏸ Pause';
+  } else {
+    audio.pause();
+    btn.textContent = '▶️ Play';
+    playPauseBtnGlobal.textContent = '▶️ Play';
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  let nextIndex = (currentPlayerIndex + 1) % players.length;
+  playPlayerAtIndex(nextIndex);
+});
+
+prevBtn.addEventListener('click', () => {
+  let prevIndex = (currentPlayerIndex - 1 + players.length) % players.length;
+  playPlayerAtIndex(prevIndex);
+});
+
+
+
+
+
+
+
+
+
+
 
 // Global play/pause button click
 playPauseBtnGlobal.addEventListener('click', () => {
@@ -317,9 +371,11 @@ prevBtn.addEventListener('click', () => {
 });
 
 
+
 // ✅ Hamburger menu close on link click
 document.querySelectorAll('.nav-links a').forEach(link => {
   link.addEventListener('click', () => {
     document.getElementById('menu-toggle').checked = false;
   });
 });
+
