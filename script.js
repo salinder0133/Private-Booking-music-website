@@ -199,147 +199,154 @@ if (contactForm) {
   });
 }
 
+
 // =======================
 // Music Player
 // =======================
-const players = document.querySelectorAll('.custom-audio-player');
-const playPauseBtnGlobal = document.getElementById('playPauseBtn');
-const nextBtn = document.getElementById('nextBtn');
-const prevBtn = document.getElementById('prevBtn');
+ // ✅ 1. Track list ek hi jagah
+  const tracksData = [
+    { title: "Jhol", img: "photos/music/music1.jpeg", src: "photos/music/jhol.mp3" },
+    { title: "Dil Ibaadat", img: "photos/music/music2.jpeg", src: "photos/music/Dil Ibaadat.mp3" },
+    { title: "Fakira", img: "photos/music/music3.jpeg", src: "photos/music/Fakira.mp3" },
+    { title: "Tu Hi Haqeeqat", img: "photos/music/music4.jpeg", src: "photos/music/Tu Hi Haqeeqat.mp3" }
+  ];
 
-let currentPlayerIndex = 0;
+  const grid = document.getElementById("musicGrid");
 
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-}
-
-players.forEach((player, index) => {
-  const audio = player.querySelector('.track');
-  const playPauseBtn = player.querySelector('.playPauseBtn');
-  const seekBar = player.querySelector('.seekBar');
-  const currentTimeEl = player.querySelector('.current-time');
-  const durationEl = player.querySelector('.duration');
-
-  // Metadata loaded
-  audio.addEventListener('loadedmetadata', () => {
-    seekBar.max = Math.floor(audio.duration);
-    if (durationEl) durationEl.textContent = formatTime(audio.duration);
+  // ✅ 2. Cards inject karna
+  tracksData.forEach(track => {
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.innerHTML = `
+      <img src="${track.img}" />
+      <h3>${track.title}</h3>
+      <div class="custom-audio-player">
+        <div class="time-display">
+          <span class="current-time">0:00</span>
+        </div>
+        <input type="range" class="seekBar" min="0" value="0" />
+        <button class="btn playPauseBtn">▶️ Play</button>
+        <audio class="track">
+          <source src="${track.src}" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    `;
+    grid.appendChild(card);
   });
 
-  // Play/pause individual
-  playPauseBtn.addEventListener('click', () => {
-    if (audio.paused) {
-      // Pause others
-      players.forEach((p, i) => {
-        const a = p.querySelector('.track');
-        const btn = p.querySelector('.playPauseBtn');
-        const ct = p.querySelector('.current-time');
-        if (i !== index) {
-          a.pause();
-          a.currentTime = 0;
-          btn.textContent = '▶️ Play';
-          if (ct) ct.textContent = "0:00";
-        }
-      });
-      audio.play();
-      playPauseBtn.textContent = '⏸ Pause';
-      currentPlayerIndex = index;
-      updateGlobalPlayPauseBtn();
-    } else {
-      audio.pause();
-      playPauseBtn.textContent = '▶️ Play';
-      updateGlobalPlayPauseBtn();
-    }
-  });
+  // ✅ 3. Aapka JS logic
+  const players = document.querySelectorAll('.custom-audio-player');
+  const playPauseBtnGlobal = document.getElementById('playPauseBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
 
-  // Timeupdate
-  audio.addEventListener('timeupdate', () => {
-    seekBar.value = Math.floor(audio.currentTime);
-    if (currentTimeEl) currentTimeEl.textContent = formatTime(audio.currentTime);
+  let currentPlayerIndex = 0;
 
-    // Last point fix
-    if (audio.currentTime >= audio.duration) {
-      audio.pause();
-      audio.currentTime = 0;
-      seekBar.value = 0;
-      playPauseBtn.textContent = '▶️ Play';
-      if (currentTimeEl) currentTimeEl.textContent = "0:00";
-      updateGlobalPlayPauseBtn();
-    }
-  });
+  function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  }
 
-  // Seek with slider
-  seekBar.addEventListener('input', () => {
-    audio.currentTime = seekBar.value;
-    if (audio.currentTime >= audio.duration) {
-      audio.pause();
-      audio.currentTime = 0;
-      seekBar.value = 0;
-      playPauseBtn.textContent = '▶️ Play';
-      if (currentTimeEl) currentTimeEl.textContent = "0:00";
-      updateGlobalPlayPauseBtn();
-    }
-  });
-
-  audio.addEventListener('ended', () => {
-    playPauseBtn.textContent = '▶️ Play';
-    seekBar.value = 0;
-    if (currentTimeEl) currentTimeEl.textContent = "0:00";
-    updateGlobalPlayPauseBtn();
-  });
-});
-
-// Global Play/Pause Button
-function updateGlobalPlayPauseBtn() {
-  const audio = players[currentPlayerIndex].querySelector('.track');
-  playPauseBtnGlobal.textContent = audio.paused ? '▶️ Play' : '⏸ Pause';
-}
-
-function playPlayerAtIndex(index) {
-  players.forEach((player, i) => {
+  players.forEach((player, index) => {
     const audio = player.querySelector('.track');
-    const btn = player.querySelector('.playPauseBtn');
+    const playPauseBtn = player.querySelector('.playPauseBtn');
+    const seekBar = player.querySelector('.seekBar');
     const currentTimeEl = player.querySelector('.current-time');
-    if (i === index) {
+
+    audio.addEventListener('loadedmetadata', () => {
+      seekBar.max = Math.floor(audio.duration);
+    });
+
+    playPauseBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        players.forEach((p, i) => {
+          const a = p.querySelector('.track');
+          const btn = p.querySelector('.playPauseBtn');
+          const ct = p.querySelector('.current-time');
+          if (i !== index) {
+            a.pause();
+            a.currentTime = 0;
+            btn.textContent = '▶️ Play';
+            if (ct) ct.textContent = "0:00";
+          }
+        });
+        audio.play();
+        playPauseBtn.textContent = '⏸ Pause';
+        currentPlayerIndex = index;
+        updateGlobalPlayPauseBtn();
+      } else {
+        audio.pause();
+        playPauseBtn.textContent = '▶️ Play';
+        updateGlobalPlayPauseBtn();
+      }
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      seekBar.value = Math.floor(audio.currentTime);
+      if (currentTimeEl) currentTimeEl.textContent = formatTime(audio.currentTime);
+    });
+
+    audio.addEventListener('ended', () => {
+      playPauseBtn.textContent = '▶️ Play';
+      seekBar.value = 0;
+      if (currentTimeEl) currentTimeEl.textContent = "0:00";
+      updateGlobalPlayPauseBtn();
+    });
+
+    seekBar.addEventListener('input', () => {
+      audio.currentTime = seekBar.value;
+    });
+  });
+
+  function updateGlobalPlayPauseBtn() {
+    const audio = players[currentPlayerIndex].querySelector('.track');
+    playPauseBtnGlobal.textContent = audio.paused ? '▶️ Play' : '⏸ Pause';
+  }
+
+  function playPlayerAtIndex(index) {
+    players.forEach((player, i) => {
+      const audio = player.querySelector('.track');
+      const btn = player.querySelector('.playPauseBtn');
+      const currentTimeEl = player.querySelector('.current-time');
+      if (i === index) {
+        audio.play();
+        btn.textContent = '⏸ Pause';
+      } else {
+        audio.pause();
+        audio.currentTime = 0;
+        btn.textContent = '▶️ Play';
+        if (currentTimeEl) currentTimeEl.textContent = "0:00";
+      }
+    });
+    currentPlayerIndex = index;
+    updateGlobalPlayPauseBtn();
+  }
+
+  playPauseBtnGlobal.addEventListener('click', () => {
+    const audio = players[currentPlayerIndex].querySelector('.track');
+    const btn = players[currentPlayerIndex].querySelector('.playPauseBtn');
+    if (audio.paused) {
       audio.play();
       btn.textContent = '⏸ Pause';
+      playPauseBtnGlobal.textContent = '⏸ Pause';
     } else {
       audio.pause();
-      audio.currentTime = 0;
       btn.textContent = '▶️ Play';
-      if (currentTimeEl) currentTimeEl.textContent = "0:00";
+      playPauseBtnGlobal.textContent = '▶️ Play';
     }
   });
-  currentPlayerIndex = index;
-  updateGlobalPlayPauseBtn();
-}
 
-// Global Controls
-playPauseBtnGlobal.addEventListener('click', () => {
-  const audio = players[currentPlayerIndex].querySelector('.track');
-  const btn = players[currentPlayerIndex].querySelector('.playPauseBtn');
-  if (audio.paused) {
-    audio.play();
-    btn.textContent = '⏸ Pause';
-    playPauseBtnGlobal.textContent = '⏸ Pause';
-  } else {
-    audio.pause();
-    btn.textContent = '▶️ Play';
-    playPauseBtnGlobal.textContent = '▶️ Play';
-  }
-});
+  nextBtn.addEventListener('click', () => {
+    let nextIndex = (currentPlayerIndex + 1) % players.length;
+    playPlayerAtIndex(nextIndex);
+  });
 
-nextBtn.addEventListener('click', () => {
-  let nextIndex = (currentPlayerIndex + 1) % players.length;
-  playPlayerAtIndex(nextIndex);
-});
-
-prevBtn.addEventListener('click', () => {
-  let prevIndex = (currentPlayerIndex - 1 + players.length) % players.length;
-  playPlayerAtIndex(prevIndex);
-});
+  prevBtn.addEventListener('click', () => {
+    let prevIndex = (currentPlayerIndex - 1 + players.length) % players.length;
+    playPlayerAtIndex(prevIndex);
+  });
 
 
 
@@ -349,4 +356,5 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     document.getElementById('menu-toggle').checked = false;
   });
 });
+
 
