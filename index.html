@@ -54,96 +54,20 @@
       </div>
     </section>
 
-    <section id="music">
+<section id="music">
       <h2>🎶 Latest Tracks</h2>
-      <div class="grid">
-
-        <div class="card">
-          <img src="photos/music/music1.jpeg" />
-          <h3>Jhol</h3>
-
-          <!-- 🎵 Custom Styled Audio Player -->
-          <div class="custom-audio-player">
-            <div class="time-display">
-              <span class="current-time">0:00</span>
-            </div>
-            <input type="range" class="seekBar" min="0" max="100" value="0" />
-            <button class="btn playPauseBtn">▶️ Play</button>
-
-            <!-- Audio (hidden) -->
-            <audio class="track">
-              <source src="photos/music/jhol.mp3" type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="photos/music/music2.jpeg" />
-          <h3>Dil Ibaadat</h3>
-
-          <div class="custom-audio-player">
-            <div class="time-display">
-              <span class="current-time">0:00</span>
-            </div>
-            <input type="range" class="seekBar" min="0" max="100" value="0" />
-            <button class="btn playPauseBtn">▶️ Play</button>
-
-            <audio class="track">
-              <source src="photos/music/Dil Ibaadat.mp3" type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="photos/music/music3.jpeg" />
-          <h3>Fakira</h3>
-
-          <div class="custom-audio-player">
-            <div class="time-display">
-              <span class="current-time">0:00</span>
-            </div>
-            <input type="range" class="seekBar" min="0" max="100" value="0" />
-            <button class="btn playPauseBtn">▶️ Play</button>
-
-            <audio class="track">
-              <source src="photos/music/Fakira.mp3" type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="photos/music/music4.jpeg" />
-          <h3>Tu Hi Haqeeqat</h3>
-
-          <div class="custom-audio-player">
-            <div class="time-display">
-              <span class="current-time">0:00</span>
-            </div>
-            <input type="range" class="seekBar" min="0" max="100" value="0" />
-            <button class="btn playPauseBtn">▶️ Play</button>
-
-            <audio class="track">
-              <source src="photos/music/Tu Hi Haqeeqat.mp3" type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        </div>
-
+      <div class="grid" id="musicGrid">
+        <!-- Cards yaha JS se inject honge -->
       </div>
 
-      <!-- 🎛 Global Audio Controls (Only Buttons) -->
+      <!-- 🎛 Global Audio Controls -->
       <div style="text-align: center; margin-top: 80px;">
         <button id="prevBtn">⏮ Previous</button>
         <button id="playPauseBtn">▶️ Play</button>
         <button id="nextBtn">⏭ Next</button>
-
-        <audio id="globalPlayer" style="display: none;"></audio>
       </div>
     </section>
-
+    
     <section id="shows">
       <h2>Upcoming Shows</h2>
       <div class="month-boxes">
@@ -256,3 +180,4 @@
 
 
 </html>
+
