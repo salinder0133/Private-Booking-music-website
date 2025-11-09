@@ -158,7 +158,7 @@ if (reasonSelect && otherReason) {
 // Countdown Timer
 // =======================
 function startPrivateBookingTimer() {
-  const expiryDate = new Date("2025-09-30T23:59:59");
+  const expiryDate = new Date("2025-12-30T23:59:59");
   const timerElement = document.getElementById("private-timer");
 
   if (!timerElement) return;
@@ -207,8 +207,7 @@ if (contactForm) {
     { title: "Jhol", img: "photos/music/music1.jpeg", src: "photos/music/jhol.mp3" },
     { title: "Dil Ibaadat", img: "photos/music/music2.jpeg", src: "photos/music/Dil Ibaadat.mp3" },
     { title: "Fakira", img: "photos/music/music3.jpeg", src: "photos/music/Fakira.mp3" },
-    { title: "Tu Hi Haqeeqat", img: "photos/music/music4.jpeg", src: "photos/music/Tu Hi Haqeeqat.mp3" },
-    { title: "Gale Lag Ja", img: "photos/music/music5.jpeg", src: "photos/music/Gale Lag ja.mp4" }
+    { title: "Tu Hi Haqeeqat", img: "photos/music/music4.jpeg", src: "photos/music/Tu Hi Haqeeqat.mp3" }
   ];
 
   const grid = document.getElementById("musicGrid");
@@ -356,3 +355,4 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     document.getElementById('menu-toggle').checked = false;
   });
 });
+
