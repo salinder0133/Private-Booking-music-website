@@ -207,7 +207,7 @@ if (contactForm) {
     { title: "Jhol", img: "photos/music/music1.jpeg", src: "photos/music/jhol.mp3" },
     { title: "Dil Ibaadat", img: "photos/music/music2.jpeg", src: "photos/music/Dil Ibaadat.mp3" },
     { title: "Fakira", img: "photos/music/music3.jpeg", src: "photos/music/Fakira.mp3" },
-    { title: "Tu Hi Haqeeqat", img: "photos/music/music4.jpeg", src: "photos/music/Tu Hi Haqeeqat.mp3" }
+    { title: "Tu Hi Haqeeqat", img: "photos/music/music4.jpeg", src: "photos/music/Tu Hi Haqeeqat.mp3" },
     { title: "Gale Lag Ja", img: "photos/music/music5.jpeg", src: "photos/music/Gale Lag ja.mp3" }
   ];
 
@@ -356,5 +356,6 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     document.getElementById('menu-toggle').checked = false;
   });
 });
+
 
 
