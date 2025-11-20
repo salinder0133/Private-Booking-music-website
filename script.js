@@ -158,7 +158,7 @@ if (reasonSelect && otherReason) {
 // Countdown Timer
 // =======================
 function startPrivateBookingTimer() {
-  const expiryDate = new Date("2025-12-30T23:59:59");
+  const expiryDate = new Date("2025-09-30T23:59:59");
   const timerElement = document.getElementById("private-timer");
 
   if (!timerElement) return;
@@ -356,6 +356,3 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     document.getElementById('menu-toggle').checked = false;
   });
 });
-
-
-
