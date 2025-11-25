@@ -4,7 +4,7 @@
 
 
 ## A High-Fidelity Cyberpunk Audio Experience
-🚀 Live Demo: Click Here to Experience the Site
+🚀 Live Demo: [Click Here to Experience the Site](https://salinder0133.github.io/Private-Booking-music-website/)
 
 ## 📝 About The Project
 This project is a futuristic, Cyberpunk-themed music portfolio website designed to simulate a high-end artist booking platform. It focuses on delivering an immersive visual and audio experience using advanced frontend techniques.
