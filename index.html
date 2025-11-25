@@ -4,67 +4,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <title>Music 2025 | Live Shows & Private Booking</title>
+  <title>Music 2025 | The Future Sound</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
+
+  <nav class="navbar">
+    <div class="logo">🎵 Music 2025</div>
+    <input type="checkbox" id="menu-toggle" />
+    <label for="menu-toggle" class="menu-icon">☰</label>
+    <ul class="nav-links">
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#music">Music</a></li>
+      <li><a href="#shows">Shows</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
   <main>
-
-    <nav class="navbar">
-      <div class="logo">🎵 Music 2025</div>
-      <input type="checkbox" id="menu-toggle" />
-      <label for="menu-toggle" class="menu-icon">☰</label>
-      <ul class="nav-links">
-        <li><a href="#home" class="active">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#music">Music</a></li>
-        <li><a href="#shows">Shows</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-
     <section id="home" class="active">
       <div class="hero">
-        <h1>🚀 The Future of Music</h1>
-        <p>Join the revolution of sound in 2025</p>
-        <a href="#!" class="btn" id="private-book-btn">🎟 Book Now</a>
-        <div class="highlight" style="border-left: 4px solid #6a11cb; padding-left: 12px;">
-          🔒 <b>Private Booking Available</b> — <span style="color: #4fffaa;">15% OFF</span>
+        <h1>🚀 The Future of Sound</h1>
+        <p>Experience the revolution of music in 2025</p>
+        <a href="#!" class="btn" id="private-book-btn">🎟 Book Private Gig</a>
+        
+        <div class="highlight" style="margin-top: 30px; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; border: 1px solid var(--accent);">
+          🔒 <b>Private Booking Deal</b> — <span style="color: #00d2ff;">15% OFF</span>
           <br />
-          <small style="opacity: 0.8;">Offer Ends In: <span id="private-timer">Loading...</span></small>
+          <small style="opacity: 0.8;">Offer Ends In: <span id="private-timer" style="color: var(--neon-purple); font-weight:bold;">Loading...</span></small>
         </div>
-
-
       </div>
     </section>
 
     <section id="about">
       <h2>About Us</h2>
-      <div class="about">
-        <img src="photos/about/about.jpeg" />
-        <div class="text">
-          <p>We are a futuristic music band blending technology and sound.</p>
-          <p>Our mission is to bring immersive musical experiences for the new generation.</p>
+      <div class="about" style="display: flex; gap: 30px; align-items: center; flex-wrap: wrap;">
+        <img src="photos/about/about.jpeg" style="width: 100%; max-width: 400px; border-radius: 20px; box-shadow: 0 0 20px rgba(0,210,255,0.2);" alt="Band Image" />
+        <div class="text" style="flex: 1;">
+          <p style="font-size: 1.1rem; line-height: 1.6;">We are a futuristic music collective blending technology, AI visuals, and soulful sound. Our mission is to transport you to 2025 through immersive musical experiences.</p>
         </div>
       </div>
     </section>
 
     <section id="music">
       <h2>🎶 Latest Tracks</h2>
-      <div class="grid" id="musicGrid">
-        <!-- Cards yaha JS se inject honge -->
-      </div>
+      
+      <div class="grid" id="musicGrid"></div>
 
-      <!-- 🎛 Global Audio Controls -->
-      <div style="text-align: center; margin-top: 80px;">
-        <button id="prevBtn">⏮ Previous</button>
-        <button id="playPauseBtn">▶️ Play</button>
-        <button id="nextBtn">⏭ Next</button>
+      <div class="global-player-container">
+        <div class="song-info">
+            <span style="color: #ccc; font-size: 0.8rem; display: block;">Now Playing</span>
+            <span id="track-name-display" style="color: var(--accent); font-weight: 700;">Select a Track</span>
+        </div>
+        <div class="controls" style="display: flex; align-items: center; gap: 15px;">
+          <button id="prevBtn">⏮</button>
+          <button id="playPauseBtn" style="font-size: 2rem; color: var(--accent); background: none; border: none; cursor: pointer;">▶️</button>
+          <button id="nextBtn">⏭</button>
+        </div>
       </div>
     </section>
 
@@ -72,70 +74,64 @@
       <h2>Upcoming Shows</h2>
       <div class="month-boxes">
         <div class="month">
-          <h3>August</h3>
-          <ul>
-            <li>Kolkata • 26 Aug 2025</li>
-            <li>Agra • 20 Dec 2025</li>
+          <h3 style="color: var(--accent);">August</h3>
+          <ul style="list-style: none; padding: 0; margin: 15px 0;">
+            <li style="margin-bottom: 8px;">📍 Kolkata • 26 Aug 2025</li>
+            <li>📍 Agra • 20 Dec 2025</li>
           </ul>
-          <a href="#!" class="btn book-show-btn" data-month="aug">Book Now</a>
+          <a href="#!" class="btn book-show-btn" data-month="aug" style="font-size: 0.9rem; padding: 8px 20px;">Book Tickets</a>
         </div>
         <div class="month">
-          <h3>September</h3>
-          <ul>
-            <li>Delhi • 3 Sep 2025</li>
-            <li>Mumbai • 10 Sep 2025</li>
-            <li>Bangalore • 18 Sep 2025</li>
+          <h3 style="color: var(--accent);">September</h3>
+          <ul style="list-style: none; padding: 0; margin: 15px 0;">
+            <li style="margin-bottom: 8px;">📍 Delhi • 3 Sep 2025</li>
+            <li style="margin-bottom: 8px;">📍 Mumbai • 10 Sep 2025</li>
+            <li>📍 Bangalore • 18 Sep 2025</li>
           </ul>
-          <a href="#!" class="btn book-show-btn" data-month="sep">Book Now</a>
+          <a href="#!" class="btn book-show-btn" data-month="sep" style="font-size: 0.9rem; padding: 8px 20px;">Book Tickets</a>
         </div>
         <div class="month">
-          <h3>October</h3>
-          <ul>
-            <li>Pune • 2 Oct 2025</li>
-            <li>Hyderabad • 15 Oct 2025</li>
+          <h3 style="color: var(--accent);">October</h3>
+          <ul style="list-style: none; padding: 0; margin: 15px 0;">
+            <li style="margin-bottom: 8px;">📍 Pune • 2 Oct 2025</li>
+            <li>📍 Hyderabad • 15 Oct 2025</li>
           </ul>
-          <a href="#!" class="btn book-show-btn" data-month="oct">Book Now</a>
+          <a href="#!" class="btn book-show-btn" data-month="oct" style="font-size: 0.9rem; padding: 8px 20px;">Book Tickets</a>
         </div>
       </div>
-      <!--naya mahina add knra ho to -->
-
     </section>
-
-
 
     <section id="gallery">
       <h2>📸 Gallery</h2>
       <div class="gallery-grid">
-        <img src="photos/gallery/photo1.jpeg" />
-        <img src="photos/gallery/photo7.jpeg" />
-        <img src="photos/gallery/photo3.jpeg" />
-        <img src="photos/gallery/photo4.jpeg" />
-        <img src="photos/gallery/photo5.jpeg" />
-        <img src="photos/gallery/photo6.jpeg" />
+        <img src="photos/gallery/photo1.jpeg" alt="Gallery 1" />
+        <img src="photos/gallery/photo7.jpeg" alt="Gallery 2" />
+        <img src="photos/gallery/photo3.jpeg" alt="Gallery 3" />
+        <img src="photos/gallery/photo4.jpeg" alt="Gallery 4" />
+        <img src="photos/gallery/photo5.jpeg" alt="Gallery 5" />
+        <img src="photos/gallery/photo6.jpeg" alt="Gallery 6" />
       </div>
     </section>
 
     <section id="contact">
       <h2>Contact Us</h2>
-      <form>
+      <form style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; border: 1px solid var(--glass-border);">
         <input type="text" placeholder="Your Name" required />
         <input type="email" placeholder="Your Email" required />
         <textarea rows="5" placeholder="Your Message"></textarea>
-        <button type="submit">Send</button>
+        <button type="submit" class="btn" style="width: 100%;">Send Message</button>
       </form>
     </section>
   </main>
 
-  <footer>
+  <footer style="margin-top: 50px; padding: 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
     <p>© 2025 Music 2025. All rights reserved.</p>
   </footer>
 
-  <!-- Popups -->
   <div id="private-popup" class="popup">
     <div class="popup-content">
-      <div class="private-title">Private Book</div>
-      <span class="close">&times;</span>
-      <h2>Private Booking Form</h2>
+      <span class="close" style="position: absolute; right: 20px; top: 15px; font-size: 2rem; cursor: pointer;">&times;</span>
+      <h2 style="color: var(--accent); margin-bottom: 20px;">Private Booking</h2>
       <form>
         <input type="text" placeholder="Your Name" required />
         <input type="email" placeholder="Your Email" required />
@@ -151,29 +147,26 @@
           <option value="other">Something else</option>
         </select>
         <input type="text" id="other-reason" placeholder="Please specify" style="display:none;" />
-        <button type="submit">Submit</button>
+        <button type="submit" class="btn" style="width: 100%;">Submit Request</button>
       </form>
     </div>
   </div>
 
   <div id="show-popup" class="popup">
     <div class="popup-content">
-      <span class="close">&times;</span>
-      <h2>Book Your Tickets</h2>
+      <span class="close" style="position: absolute; right: 20px; top: 15px; font-size: 2rem; cursor: pointer;">&times;</span>
+      <h2 style="color: var(--accent); margin-bottom: 20px;">Book Tickets</h2>
       <form>
         <input type="text" placeholder="Your Name" required />
         <input type="email" placeholder="Your Email" required />
-
         <select id="show-select" required>
           <option value="">Select Show</option>
         </select>
-
         <input type="number" placeholder="Number of Tickets" min="1" required />
-        <button type="submit">Book Now</button>
+        <button type="submit" class="btn" style="width: 100%;">Book Now</button>
       </form>
     </div>
   </div>
-
 
   <script src="script.js"></script>
 </body>
