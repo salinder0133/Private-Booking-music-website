@@ -325,3 +325,51 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+
+
+
+
+  // 1. Zaruri elements ko select karein
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const menuToggle = document.getElementById('menu-toggle');
+  
+  // Maan lete hain aapke saare content sections <section> tag ke andar hain
+  const sections = document.querySelectorAll('section'); 
+
+  // Page load hote hi sirf HOME dikhe, baki sab hide ho jayein
+  window.onload = () => {
+    sections.forEach((sec, index) => {
+      if (sec.id === 'home') {
+        sec.style.display = 'block';
+      } else {
+        sec.style.display = 'none';
+      }
+    });
+  };
+
+  // 2. Nav Links par click event lagana
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      // a) Links ka active color handle karna
+      navLinks.forEach(l => l.classList.remove('active'));
+      this.classList.add('active');
+
+      // b) Saare sections ko hide kar dena
+      sections.forEach(sec => sec.style.display = 'none');
+
+      // c) Click kiye gaye link ka target section dikhana
+      const targetId = this.getAttribute('href').replace('#', '');
+      const targetSection = document.getElementById(targetId);
+      
+      if (targetSection) {
+        targetSection.style.display = 'block';
+      }
+
+      // d) Mobile menu band kar dena
+      menuToggle.checked = false;
+    });
+  });
+
+
+
