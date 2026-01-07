@@ -169,44 +169,9 @@
   </div>
 
   <script src="script.js"></script>
-
-  // 1. Saare Nav Links aur Sections ko select karein
-const navLinks = document.querySelectorAll('.nav-links a');
-const sections = document.querySelectorAll('section');
-const menuToggle = document.getElementById('menu-toggle');
-
-navLinks.forEach(link => {
-  link.addEventListener('click', function(e) {
-    // Page jump ko rokne ke liye (optional)
-    // e.preventDefault(); 
-
-    // 2. Pehle saare links se 'active' class hatao
-    navLinks.forEach(l => l.classList.remove('active'));
-    
-    // 3. Jis link par click kiya use 'active' color do
-    this.classList.add('active');
-
-    // 4. Saare sections ko hide kardo
-    sections.forEach(section => {
-      section.classList.remove('active-section');
-    });
-
-    // 5. Target section ko dikhao (href se ID nikal kar)
-    const targetId = this.getAttribute('href').substring(1);
-    const targetSection = document.getElementById(targetId);
-    if(targetSection) {
-        targetSection.classList.add('active-section');
-    }
-
-    // 6. Mobile Menu ko apne aap band kar do click ke baad
-    menuToggle.checked = false;
-  });
-});
-
-// Default: Page load hote hi Home dikhane ke liye
-document.getElementById('home').classList.add('active-section');
   
 </body>
 
 </html>
+
 
