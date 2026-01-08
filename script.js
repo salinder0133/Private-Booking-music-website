@@ -327,37 +327,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 //nav fix 
-  const navLinks = document.querySelectorAll('.nav-links a');
-  const menuToggle = document.getElementById('menu-toggle');
-  const sections = document.querySelectorAll('section'); 
+ const navLinks = document.querySelectorAll('.nav-links a');
+const menuToggle = document.getElementById('menu-toggle');
+const sections = document.querySelectorAll('section');
 
-   window.onload = () => {
-    sections.forEach((sec, index) => {
-      if (sec.id === 'home') {
-        sec.style.display = 'block';
-      } else {
-        sec.style.display = 'none';
-      }
+const showSection = (id) => {
+    const targetId = id.replace('#', '') || 'home'; 
+    
+    sections.forEach(sec => {
+        sec.style.display = (sec.id === targetId) ? 'block' : 'none';
     });
-  };
 
-  navLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      navLinks.forEach(l => l.classList.remove('active'));
-      this.classList.add('active');
-
-      sections.forEach(sec => sec.style.display = 'none');
-
-      const targetId = this.getAttribute('href').replace('#', '');
-      const targetSection = document.getElementById(targetId);
-      
-      if (targetSection) {
-        targetSection.style.display = 'block';
-      }
-
-      menuToggle.checked = false;
+    navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
     });
-  });
+};
+
+// 2. Click Event (SPA behavior)
+navLinks.forEach(link => {
+    link.addEventListener('click', function() {
+         if(menuToggle) menuToggle.checked = false;
+      });
+});
+
+// 3. Back/Forward Button Handle karna (Essential for SPA)
+window.addEventListener('popstate', () => {
+    showSection(window.location.hash);
+});
+
+// 4. Page Load 
+window.onload = () => {
+    showSection(window.location.hash);
+};
 
 
 
