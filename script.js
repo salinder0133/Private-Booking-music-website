@@ -239,9 +239,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const showsByMonth = {
-        aug: ["Kolkata • 26 Aug 2025", "Agra • 20 Dec 2025"],
-        sep: ["Delhi • 3 Sep 2025", "Mumbai • 10 Sep 2025"],
-        oct: ["Pune • 2 Oct 2025", "Hyderabad • 15 Oct 2025"]
+        aug: ["Kolkata • 26 Aug 2026", "Agra • 20 Dec 2026"],
+        sep: ["Delhi • 3 Sep 2026", "Mumbai • 10 Sep 2026"],
+        oct: ["Pune • 2 Oct 2026", "Hyderabad • 15 Oct 2026"]
     };
     
     const showSelect = document.getElementById("show-select");
@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const timerElement = document.getElementById("private-timer");
         if (!timerElement) return;
 
-        const expiryDate = new Date("2025-12-31T23:59:59").getTime();
+        const expiryDate = new Date("2026-12-31T23:59:59").getTime();
 
         const updateTimer = setInterval(() => {
             const now = new Date().getTime();
@@ -359,6 +359,7 @@ window.addEventListener('popstate', () => {
 window.onload = () => {
     showSection(window.location.hash);
 };
+
 
 
 
