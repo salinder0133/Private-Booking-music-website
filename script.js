@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const images = ['photos/photo1.jpg', 'photos/photo2.jpg', 'photos/photo3.jpg'];
     let current = 0;
 
-    // Preload images to prevent flickering
     images.forEach(src => {
         const img = new Image();
         img.src = src;
@@ -16,20 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function changeBackground() {
         if (hero) {
             hero.style.transition = "background-image 1s ease-in-out";
-            // FIX: Added backticks for template literal
             hero.style.backgroundImage = `url('${images[current]}')`;
             current = (current + 1) % images.length;
         }
     }
 
-    // Start slideshow
     if (hero) {
         setTimeout(() => {
             changeBackground();
             setInterval(changeBackground, 5000);
         }, 100);
     }
-
 
     // =======================
     // 2. Scroll Reveal Animation
@@ -49,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         revealElements.forEach(el => revealObserver.observe(el));
     }
 
-
     // =======================
     // 3. 3D Holographic Tilt Effect
     // =======================
@@ -64,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
                 const xMove = (x - rect.width / 2) / 25;
                 const yMove = (y - rect.height / 2) / 25;
-                // FIX: Added backticks for template literal
                 card.style.transform = `perspective(800px) rotateY(${xMove}deg) rotateX(${-yMove}deg) scale(1.01)`;
             } else {
                 card.style.transition = "transform 0.5s ease-out, box-shadow 0.3s";
@@ -72,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
 
     // =======================
     // 4. MUSIC PLAYER SYSTEM
@@ -94,9 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPlayerIndex = 0;
     let players = [];
 
-    // Only run music logic if grid exists
     if (grid) {
-        // --- Generate Cards ---
         tracksData.forEach((track, index) => {
             const card = document.createElement("div");
             card.classList.add("card");
@@ -117,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
             grid.appendChild(card);
         });
 
-        // --- Initialize Logic (After DOM Update) ---
         setTimeout(() => {
             const cards = document.querySelectorAll('.card');
             cards.forEach((card, index) => {
@@ -151,7 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 200);
     }
 
-    // --- Player Functions ---
     function playPlayerAtIndex(index) {
         if (players.length === 0) return;
         
@@ -215,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // =======================
-    // 5. POPUPS, FORMS & TIMER
+    // 5. POPUPS & TIMER
     // =======================
     const privatePopup = document.getElementById("private-popup");
     const showPopup = document.getElementById("show-popup");
@@ -263,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Toast Notification
     function showToast(msg) {
         const div = document.createElement('div');
         div.innerText = msg;
@@ -276,27 +264,19 @@ document.addEventListener('DOMContentLoaded', () => {
         div.style.borderRadius = '15px';
         div.style.border = '1px solid var(--accent-cyan)';
         div.style.boxShadow = '0 0 20px rgba(0, 242, 255, 0.3)';
-        div.style.zIndex = '3000';
+        div.style.zIndex = '4000';
         div.style.fontWeight = '600';
         div.style.backdropFilter = 'blur(10px)';
         document.body.appendChild(div);
         setTimeout(() => div.remove(), 3000);
     }
 
-    document.querySelectorAll('form').forEach(f => {
-        f.addEventListener('submit', (e) => {
-            e.preventDefault();
-            showToast("🚀 Request Initiated successfully!");
-            document.querySelectorAll(".popup").forEach(p => p.classList.remove("active"));
-            f.reset();
-        });
-    });
+   
 
-    // FIX: Completed the Timer Logic
+        // Timer Logic
     function startPrivateBookingTimer() {
         const timerElement = document.getElementById("private-timer");
         if (!timerElement) return;
-
         const expiryDate = new Date("2026-12-31T23:59:59").getTime();
 
         const updateTimer = setInterval(() => {
@@ -313,52 +293,44 @@ document.addEventListener('DOMContentLoaded', () => {
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Update display - assumes element accepts text, or adjust HTML structure
             timerElement.innerHTML = `${days}d : ${hours}h : ${minutes}m : ${seconds}s`;
         }, 1000);
     }
 
-    // Initialize Timer
     startPrivateBookingTimer();
 
-});
+    // Nav Fix
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const menuToggle = document.getElementById('menu-toggle');
+    const sections = document.querySelectorAll('section');
 
-
-
-//nav fix 
- const navLinks = document.querySelectorAll('.nav-links a');
-const menuToggle = document.getElementById('menu-toggle');
-const sections = document.querySelectorAll('section');
-
-const showSection = (id) => {
-    const targetId = id.replace('#', '') || 'home'; 
-    
-    sections.forEach(sec => {
-        sec.style.display = (sec.id === targetId) ? 'block' : 'none';
-    });
+    const showSection = (id) => {
+        const targetId = id.replace('#', '') || 'home';
+        sections.forEach(sec => {
+            sec.style.display = (sec.id === targetId) ? 'block' : 'none';
+        });
+        navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
+        });
+    };
 
     navLinks.forEach(link => {
-        link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
+        link.addEventListener('click', function() {
+            if(menuToggle) menuToggle.checked = false;
+        });
     });
-};
 
-// 2. Click Event (SPA behavior)
-navLinks.forEach(link => {
-    link.addEventListener('click', function() {
-         if(menuToggle) menuToggle.checked = false;
-      });
+    window.addEventListener('popstate', () => {
+        showSection(window.location.hash);
+    });
+
+    window.onload = () => {
+        showSection(window.location.hash);
+    };
+
 });
 
-// 3. Back/Forward Button Handle karna (Essential for SPA)
-window.addEventListener('popstate', () => {
-    showSection(window.location.hash);
-});
 
-// 4. Page Load 
-window.onload = () => {
-    showSection(window.location.hash);
-};
 
 
 
