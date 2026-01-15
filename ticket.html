@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Sound Ticket</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* Page Reset & Centering */
+        body {
+            background-color: #050510;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            color: white;
+        }
+
+        /* Action Area (Button) */
+        .action-area {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: #00f2ff;
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .download-btn:hover {
+            background: #fff;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* =======================
+           YOUR TICKET CSS
+           ======================= */
+        
+        .cyber-ticket {
+            width: 800px;
+            height: 300px;
+            display: flex;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 242, 255, 0.2);
+            position: relative;
+            background: #000;
+        }
+
+        /* --- 1. LEFT SIDE (INFO) --- */
+        .ticket-left {
+            flex: 2.5;
+            padding: 19px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #0b0b15 0%, #151525 100%);
+            border: 2px solid #00f2ff;
+            border-right: none;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+        }
+
+        .ticket-bg-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .event-type {
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            color: #ff00d4;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 0, 212, 0.5);
+        }
+
+        .brand-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            margin: 5px 0 15px 0;
+            text-shadow: none;
+            letter-spacing: normal;
+            line-height: 1.1;
+        }
+
+        .ticket-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-box .label {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .info-box .value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .name-highlight {
+            color: #00f2ff;
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        }
+
+        .footer-warning {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            margin-top: 6px;
+        }
+
+        /* --- 2. CUT LINE --- */
+        .ticket-rip-line {
+            width: 0;
+            border-right: 4px dashed #000;
+            background: transparent;
+            position: relative;
+            z-index: 10;
+        }
+
+        .ticket-rip-line::before,
+        .ticket-rip-line::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: #050510; /* Match Page BG */
+            border-radius: 50%;
+            left: -12px;
+            border: 2px solid #00f2ff;
+            z-index: 20;
+        }
+
+        .ticket-rip-line::before { top: -12px; }
+        .ticket-rip-line::after { bottom: -12px; }
+
+        /* --- 3. RIGHT SIDE --- */
+        .ticket-right {
+            flex: 1;
+            background: #121212;
+            position: relative;
+            padding: 20px 60px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 2px solid #00f2ff;
+            border-left: none;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            overflow: hidden;
+        }
+
+        .admit-one {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            background-color: #ffffff;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 1.2rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            margin: 0;
+        }
+
+        .qr-box {
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            padding: 6px;
+            border-radius: 8px;
+            border: 2px solid #00f2ff;
+            margin-bottom: 15px;
+            margin-right: 10px;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+        }
+
+        .fake-qr {
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(45deg, #000 25%, transparent 25%),
+                linear-gradient(-45deg, #000 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #000 75%),
+                linear-gradient(-45deg, transparent 75%, #000 75%);
+            background-size: 16px 16px;
+            background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+        }
+
+        .ticket-id-box { margin-right: 10px; }
+        .ticket-id-box .value {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: #00f2ff;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ticket-container">
+        <div class="cyber-ticket">
+            
+            <div class="ticket-left">
+                <div class="ticket-bg-logo">MUSIC 2025</div>
+                
+                <div class="header">
+                    <span class="event-type">LIVE HOLOGRAPHIC CONCERT</span>
+                    <h1 class="brand-title">FUTURE SOUND</h1>
+                </div>
+
+                <div class="ticket-info">
+                    <div class="info-box">
+                        <span class="label">ATTENDEE</span>
+                        <span class="value name-highlight" id="guest-name">Loading...</span>
+                    </div>
+                    <div class="info-box">
+                        <span class="label">DATE & LOCATION</span>
+                        <span class="value" id="ticket-date">Loading...</span>
+                    </div>
+                    <div class="info-box">
+                        <span class="label">TIME</span>
+                        <span class="value">08:00 PM (IST)</span>
+                    </div>
+                </div>
+
+                <div class="footer-warning">
+                    AUTH: 8X-CRYPTO-2026 // NO REFUNDS // 100% VISUAL EXPERIENCE
+                </div>
+            </div>
+
+            <div class="ticket-rip-line"></div>
+
+            <div class="ticket-right">
+                <h2 class="admit-one">ADMIT ONE</h2>
+                
+                <div class="qr-box">
+                    <div class="fake-qr"></div>
+                </div>
+
+                <div class="ticket-id-box">
+                    <span class="label">TICKET ID</span>
+                    <span class="value ticket-id">#ID-0000</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="action-area">
+        <p style="margin-bottom: 10px; color: #aaa;">Ticket Booked Successfully!</p>
+        <button class="download-btn" onclick="downloadTicket()">
+            Download Ticket PDF
+        </button>
+    </div>
+
+    <script>
+        // === LOGIC START: URL SE DATA UTHANA ===
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        const passengerName = urlParams.get('fullName'); 
+        const selectedDate = urlParams.get('showDate');
+        const ticketQty = urlParams.get('qty');
+
+        // Data Check & Print
+        if (passengerName) {
+            document.getElementById('guest-name').innerText = passengerName;
+        } else {
+            document.getElementById('guest-name').innerText = "Unknown Guest";
+        }
+        
+        if (selectedDate) {
+            document.getElementById('ticket-date').innerText = selectedDate;
+        }
+
+        if (ticketQty) {
+            const admitText = ticketQty > 1 ? `ADMIT ${ticketQty}` : "ADMIT ONE";
+            document.querySelector('.admit-one').innerText = admitText;
+        }
+
+        // Random ID Generate
+        const randomID = "#ID-" + Math.floor(1000 + Math.random() * 9000);
+        document.querySelector('.ticket-id').innerText = randomID;
+        
+        // === PDF DOWNLOAD FUNCTION ===
+        async function downloadTicket() {
+            const { jsPDF } = window.jspdf;
+            
+            const ticketElement = document.getElementById("ticket-container");
+            const btn = document.querySelector('.download-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "Generating...";
+            btn.disabled = true;
+
+            try {
+                const canvas = await html2canvas(ticketElement, {
+                    scale: 2, 
+                    backgroundColor: null,
+                    useCORS: true
+                });
+
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('l', 'mm', [212, 80]);
+                pdf.addImage(imgData, 'PNG', 0, 0, 212, 80);
+                pdf.save("FutureSound_Ticket.pdf");
+
+            } catch (error) {
+                console.error("PDF Generation Error:", error);
+                alert("Something went wrong while downloading.");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+
+</body>
+</html>
