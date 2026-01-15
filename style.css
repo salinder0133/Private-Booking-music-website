@@ -3,11 +3,8 @@
    ======================= */
 :root {
     --bg-dark: #050510;
-    /* Deep space black */
     --accent-cyan: #00f2ff;
-    /* Bright Neon Cyan */
     --accent-pink: #ff00d4;
-    /* Bright Neon Pink */
     --accent-purple: #7b2cbf;
     --glass-bg: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.1);
@@ -26,7 +23,7 @@ body {
     overflow-x: hidden;
 }
 
-/* 🌌 Background Ambience (Moving Lights) */
+/* 🌌 Background Ambience */
 body::before,
 body::after {
     content: '';
@@ -84,6 +81,8 @@ ul {
     padding: 15px 40px;
     background: rgba(5, 5, 16, 0.8);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    /* VS Code Fix */
     border-bottom: 1px solid rgba(0, 242, 255, 0.2);
     position: sticky;
     top: 0;
@@ -97,6 +96,8 @@ ul {
     text-transform: uppercase;
     background: linear-gradient(45deg, var(--accent-cyan), var(--accent-pink));
     -webkit-background-clip: text;
+    /* VS Code Fix */
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -109,7 +110,6 @@ ul {
     font-size: 0.9rem;
     font-weight: 600;
     opacity: 0.8;
-    position: relative;
 }
 
 .nav-links li a:hover,
@@ -119,14 +119,7 @@ ul {
     text-shadow: var(--text-glow-cyan);
 }
 
-/* Mobile Menu */
-.menu-icon {
-    display: none;
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: var(--accent-cyan);
-}
-
+.menu-icon,
 #menu-toggle {
     display: none;
 }
@@ -151,6 +144,9 @@ ul {
 
     .menu-icon {
         display: block;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: var(--accent-cyan);
     }
 
     .navbar {
@@ -159,7 +155,7 @@ ul {
 }
 
 /* =======================
-   🎆 HERO SECTION (FIXED VISIBILITY)
+   🎆 HERO & SECTIONS
    ======================= */
 .hero {
     text-align: center;
@@ -167,14 +163,11 @@ ul {
     position: relative;
     border-radius: 30px;
     overflow: hidden;
-    background-size: cover;
-    background-position: center;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: var(--card-shadow);
     z-index: 1;
 }
 
-/* Darker Overlay for better text visibility */
 .hero::before {
     content: '';
     position: absolute;
@@ -189,23 +182,15 @@ ul {
     line-height: 1.1;
     text-transform: uppercase;
     margin-bottom: 15px;
-    color: #fff;
-    /* Pure white for clarity */
-    text-shadow:
-        0 0 10px rgba(0, 242, 255, 0.9),
-        0 0 30px rgba(0, 242, 255, 0.5),
-        2px 2px 0px #000;
-    /* Outline for sharpness */
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.9), 2px 2px 0px #000;
 }
 
 .hero p {
     font-size: 1.2rem;
     color: rgba(255, 255, 255, 0.9);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
     margin-bottom: 30px;
 }
 
-/* Button Styling */
 .btn {
     padding: 12px 35px;
     border-radius: 50px;
@@ -226,9 +211,6 @@ ul {
     box-shadow: 0 0 40px var(--accent-cyan);
 }
 
-/* =======================
-   ✨ SECTIONS
-   ======================= */
 section {
     padding: 80px 20px;
     max-width: 1200px;
@@ -250,11 +232,13 @@ h2 {
     text-transform: uppercase;
     background: linear-gradient(90deg, #fff, var(--accent-cyan), var(--accent-pink));
     -webkit-background-clip: text;
+    /* VS Code Fix */
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 /* =======================
-   🎵 MUSIC CARDS
+   🎵 MUSIC CARDS & PLAYER
    ======================= */
 .grid {
     display: grid;
@@ -266,11 +250,12 @@ h2 {
 .card {
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    /* VS Code Fix */
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 20px;
     text-align: center;
-    position: relative;
     transition: transform 0.3s;
     box-shadow: var(--card-shadow);
 }
@@ -278,7 +263,6 @@ h2 {
 .card:hover {
     transform: translateY(-10px);
     border-color: var(--accent-cyan);
-    box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
 }
 
 .card img {
@@ -287,13 +271,6 @@ h2 {
     margin-bottom: 10px;
 }
 
-.card h3 {
-    margin: 10px 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-
-/* Card Play Button */
 .card-play-btn {
     background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
     color: white;
@@ -311,12 +288,6 @@ h2 {
     transition: 0.3s;
 }
 
-.card-play-btn:hover {
-    transform: scale(1.15) rotate(10deg);
-    box-shadow: 0 0 30px var(--accent-cyan);
-}
-
-/* Visualizer */
 .visualizer-container {
     height: 20px;
     display: flex;
@@ -350,21 +321,20 @@ input[type=range] {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 5px;
     outline: none;
+    -webkit-appearance: none;
+    /* Standard fix */
     appearance: none;
 }
 
 input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
     appearance: none;
     width: 12px;
     height: 12px;
     border-radius: 50%;
     background: var(--accent-cyan);
-    box-shadow: 0 0 10px var(--accent-cyan);
 }
 
-/* =======================
-   🛑 GLOBAL FLOATING PLAYER
-   ======================= */
 .global-player-container {
     position: fixed;
     bottom: 20px;
@@ -374,6 +344,8 @@ input[type=range]::-webkit-slider-thumb {
     max-width: 500px;
     background: rgba(18, 12, 41, 0.9);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    /* VS Code Fix */
     border: 1px solid var(--glass-border);
     border-bottom: 3px solid var(--accent-cyan);
     border-radius: 50px;
@@ -391,16 +363,10 @@ input[type=range]::-webkit-slider-thumb {
     font-size: 1.5rem;
     color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
-    transition: 0.2s;
-}
-
-.global-player-container button:hover {
-    color: var(--accent-cyan);
-    text-shadow: 0 0 10px var(--accent-cyan);
 }
 
 /* =======================
-   📅 SHOWS & GALLERY
+   📅 MONTH & GALLERY
    ======================= */
 .month-boxes {
     display: flex;
@@ -421,16 +387,6 @@ input[type=range]::-webkit-slider-thumb {
 .month:hover {
     transform: translateY(-5px);
     border-color: var(--accent-pink);
-}
-
-.month h3 {
-    color: var(--accent-pink);
-    text-shadow: 0 0 10px rgba(255, 0, 212, 0.5);
-}
-
-.month li {
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .gallery-grid {
@@ -454,7 +410,7 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 /* =======================
-   📝 FORMS & POPUPS
+   📝 POPUPS & INPUTS
    ======================= */
 input,
 textarea,
@@ -469,11 +425,23 @@ select {
     box-sizing: border-box;
 }
 
-input:focus,
-textarea:focus {
-    border-color: var(--accent-cyan);
-    outline: none;
-    box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+/* --- FIX FOR SELECT DROPDOWN --- */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    /* Custom Arrow for Cyberpunk Look */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300f2ff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 15px top 50%;
+    background-size: 12px auto;
+}
+
+/* Option ka background Black taaki text visible ho */
+select option {
+    background-color: #050510;
+    color: #fff;
 }
 
 .popup {
@@ -513,19 +481,3 @@ textarea:focus {
     color: var(--accent-pink);
 }
 
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2.8rem;
-    }
-
-    .global-player-container {
-        width: 85%;
-        bottom: 15px;
-        padding: 8px 20px;
-    }
-
-    h2 {
-        font-size: 2rem;
-    }
-}
