@@ -246,6 +246,62 @@
             font-weight: bold;
             letter-spacing: 1px;
         }
+
+        /* ==========================================
+           MOBILE RESPONSIVE CSS (KEY CHANGES)
+           ========================================== */
+        
+        @media (max-width: 768px) {
+            .cyber-ticket {
+                flex-direction: column; /* Stack vertically */
+                width: 95%;
+                max-width: 400px;
+                height: auto;
+                border-radius: 20px;
+            }
+
+            .ticket-left {
+                border-right: 2px solid #00f2ff;
+                border-bottom: none;
+                border-top-right-radius: 20px;
+                border-bottom-left-radius: 0;
+            }
+
+            /* Rip Line horizontal banayi */
+            .ticket-rip-line {
+                width: 100%;
+                height: 0;
+                border-right: none;
+                border-bottom: 4px dashed #050510;
+            }
+
+            .ticket-rip-line::before {
+                top: -14px; left: -12px;
+            }
+            .ticket-rip-line::after {
+                top: -14px; left: auto; right: -12px;
+            }
+
+            .ticket-right {
+                border-left: 2px solid #00f2ff;
+                border-top: none;
+                padding: 30px 20px 80px 20px; /* Space for horizontal text */
+                border-bottom-left-radius: 20px;
+                border-top-right-radius: 0;
+            }
+
+            .admit-one {
+                writing-mode: horizontal-tb; /* Text ko seedha kiya */
+                width: 100%;
+                height: 50px;
+                right: 0; bottom: 0; top: auto;
+                letter-spacing: 10px;
+            }
+
+            .brand-title {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -304,7 +360,7 @@
         <button class="download-btn" onclick="downloadTicket()">
             Download Ticket PDF
         </button>
-        <button class="download-btn"style="margin:10px" onclick="window.history.back()">
+        <button class="download-btn" style="background: #333; color: white; margin: 15px;"onclick="window.history.back()">
             Back
         </button>
     </div>
@@ -372,3 +428,4 @@
 </body>
 
 </html>
+
