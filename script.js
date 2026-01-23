@@ -7,11 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const images = ['photos/photo1.jpg', 'photos/photo2.jpg', 'photos/photo3.jpg'];
     let current = 0;
 
-    images.forEach(src => {
-        const img = new Image();
-        img.src = src;
-    });
-
     function changeBackground() {
         if (hero) {
             hero.style.transition = "background-image 1s ease-in-out";
@@ -31,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Scroll Reveal Animation
     // =======================
     const revealElements = document.querySelectorAll("section");
-    
     if (revealElements.length > 0) {
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -41,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }, { threshold: 0.1 });
-
         revealElements.forEach(el => revealObserver.observe(el));
     }
 
@@ -50,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // =======================
     document.addEventListener('mousemove', (e) => {
         if (window.innerWidth < 768) return;
-
         document.querySelectorAll('.card, .month, .hero').forEach(card => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -61,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const yMove = (y - rect.height / 2) / 25;
                 card.style.transform = `perspective(800px) rotateY(${xMove}deg) rotateX(${-yMove}deg) scale(1.01)`;
             } else {
-                card.style.transition = "transform 0.5s ease-out, box-shadow 0.3s";
+                card.style.transition = "transform 0.5s ease-out";
                 card.style.transform = `perspective(800px) rotateY(0deg) rotateX(0deg) scale(1)`;
             }
         });
@@ -122,19 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     seekBar.addEventListener('input', () => audio.currentTime = seekBar.value);
 
                     cardBtn.addEventListener('click', () => {
-                        if (audio.paused) {
-                            playPlayerAtIndex(index);
-                        } else {
-                            audio.pause();
-                            updateUI();
-                        }
+                        audio.paused ? playPlayerAtIndex(index) : (audio.pause(), updateUI());
                     });
 
-                    audio.addEventListener('ended', () => {
-                        let next = (currentPlayerIndex + 1) % players.length;
-                        playPlayerAtIndex(next);
-                    });
-
+                    audio.addEventListener('ended', () => playPlayerAtIndex((currentPlayerIndex + 1) % players.length));
                     players.push({ audio, cardBtn, visualizer, title: tracksData[index].title });
                 }
             });
@@ -143,41 +126,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playPlayerAtIndex(index) {
         if (players.length === 0) return;
-        
-        players.forEach((p, i) => {
-            if (i !== index) {
-                p.audio.pause();
-                p.audio.currentTime = 0;
-            }
-        });
+        players.forEach((p, i) => { if (i !== index) { p.audio.pause(); p.audio.currentTime = 0; } });
         const target = players[index];
-        target.audio.play().catch(e => console.log("Autoplay prevented:", e));
+        target.audio.play().catch(e => console.log("Play error:", e));
         currentPlayerIndex = index;
         if(trackNameDisplay) trackNameDisplay.innerText = target.title;
         updateUI();
     }
 
     function updateUI() {
-        if (players.length === 0) return;
-
         players.forEach((p) => {
             if (!p.audio.paused) {
                 p.cardBtn.innerHTML = "⏸";
                 p.visualizer.style.opacity = "1";
-                p.cardBtn.style.boxShadow = "0 0 30px var(--accent-pink), 0 0 10px #fff";
-                p.cardBtn.style.background = "linear-gradient(135deg, var(--accent-pink), var(--accent-purple))";
             } else {
                 p.cardBtn.innerHTML = "▶";
                 p.visualizer.style.opacity = "0";
-                p.cardBtn.style.boxShadow = "0 0 20px var(--accent-cyan)";
-                p.cardBtn.style.background = "linear-gradient(135deg, var(--accent-cyan), var(--accent-purple))";
             }
         });
-
-        if(playPauseBtnGlobal) {
-            const currentAudio = players[currentPlayerIndex].audio;
-            playPauseBtnGlobal.innerHTML = currentAudio.paused ? "▶" : "⏸";
-        }
+        if(playPauseBtnGlobal) playPauseBtnGlobal.innerHTML = players[currentPlayerIndex].audio.paused ? "▶" : "⏸";
     }
 
     if (playPauseBtnGlobal) {
@@ -190,43 +157,58 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            if(players.length > 0) playPlayerAtIndex((currentPlayerIndex + 1) % players.length);
-        });
-    }
-    
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            if(players.length > 0) playPlayerAtIndex((currentPlayerIndex - 1 + players.length) % players.length);
-        });
-    }
-
+    if (nextBtn) nextBtn.addEventListener('click', () => playPlayerAtIndex((currentPlayerIndex + 1) % players.length));
+    if (prevBtn) prevBtn.addEventListener('click', () => playPlayerAtIndex((currentPlayerIndex - 1 + players.length) % players.length));
 
     // =======================
-    // 5. POPUPS & TIMER
+    // 5. POPUPS & NOTIFICATIONS
     // =======================
     const privatePopup = document.getElementById("private-popup");
     const showPopup = document.getElementById("show-popup");
     const privateBtn = document.getElementById("private-book-btn");
 
-    if (privateBtn && privatePopup) {
-        privateBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            privatePopup.classList.add("active");
-        });
+    // Notification Function
+    const notifyContainer = document.createElement('div');
+    notifyContainer.id = 'notification-container';
+    document.body.appendChild(notifyContainer);
+
+    function showNotification(message, type = 'success') {
+        const n = document.createElement('div');
+        n.className = `notification ${type}`;
+        n.innerHTML = `<span>${type === 'success' ? '✅' : '❌'} ${message}</span>`;
+        notifyContainer.appendChild(n);
+        setTimeout(() => {
+            n.classList.add('fade-out');
+            n.addEventListener('animationend', () => n.remove());
+        }, 3000);
     }
 
+    // Form Submissions
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', (e) => {
+            if (form.action.includes('ticket.html')) return; // Ticket logic handled by HTML action
+            
+            e.preventDefault();
+            showNotification("Request Sent Successfully!");
+            form.reset();
+            
+            // Close Popups
+            document.querySelectorAll('.popup').forEach(p => p.classList.remove('active'));
+        });
+    });
+
+    // Popup Logic
+    if (privateBtn) privateBtn.addEventListener("click", (e) => { e.preventDefault(); privatePopup.classList.add("active"); });
+    
     document.querySelectorAll(".close").forEach(btn => {
         btn.addEventListener("click", () => document.querySelectorAll(".popup").forEach(p => p.classList.remove("active")));
     });
 
     window.addEventListener('click', (e) => {
-        document.querySelectorAll(".popup").forEach(p => {
-            if (e.target == p) p.classList.remove("active");
-        });
+        if (e.target.classList.contains('popup')) e.target.classList.remove('active');
     });
 
+    // Show Selection Logic
     const showsByMonth = {
         aug: ["Kolkata • 26 Aug 2026", "Agra • 20 Dec 2026"],
         sep: ["Delhi • 3 Sep 2026", "Mumbai • 10 Sep 2026"],
@@ -241,99 +223,43 @@ document.addEventListener('DOMContentLoaded', () => {
             const shows = showsByMonth[month] || [];
             if (showSelect && showPopup) {
                 showSelect.innerHTML = '<option value="">Select Show</option>';
-                shows.forEach(show => {
-                    const option = document.createElement("option");
-                    option.value = show;
-                    option.textContent = show;
-                    showSelect.appendChild(option);
+                shows.forEach(s => {
+                    const opt = document.createElement("option");
+                    opt.value = s; opt.textContent = s;
+                    showSelect.appendChild(opt);
                 });
                 showPopup.classList.add("active");
             }
         });
     });
 
-    function showToast(msg) {
-        const div = document.createElement('div');
-        div.innerText = msg;
-        div.style.position = 'fixed';
-        div.style.bottom = '100px';
-        div.style.right = '20px';
-        div.style.background = 'rgba(0, 242, 255, 0.1)';
-        div.style.color = '#fff';
-        div.style.padding = '15px 25px';
-        div.style.borderRadius = '15px';
-        div.style.border = '1px solid var(--accent-cyan)';
-        div.style.boxShadow = '0 0 20px rgba(0, 242, 255, 0.3)';
-        div.style.zIndex = '4000';
-        div.style.fontWeight = '600';
-        div.style.backdropFilter = 'blur(10px)';
-        document.body.appendChild(div);
-        setTimeout(() => div.remove(), 3000);
-    }
-
-   
-
-        // Timer Logic
-    function startPrivateBookingTimer() {
-        const timerElement = document.getElementById("private-timer");
-        if (!timerElement) return;
+    // Timer Logic
+    const timerElement = document.getElementById("private-timer");
+    if (timerElement) {
         const expiryDate = new Date("2026-12-31T23:59:59").getTime();
-
-        const updateTimer = setInterval(() => {
+        setInterval(() => {
             const now = new Date().getTime();
-            const distance = expiryDate - now;
-
-            if (distance < 0) {
-                clearInterval(updateTimer);
-                timerElement.innerHTML = "OFFER EXPIRED";
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            timerElement.innerHTML = `${days}d : ${hours}h : ${minutes}m : ${seconds}s`;
+            const dist = expiryDate - now;
+            if (dist < 0) { timerElement.innerHTML = "EXPIRED"; return; }
+            const d = Math.floor(dist / (1000 * 60 * 60 * 24));
+            const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((dist % (1000 * 60)) / 1000);
+            timerElement.innerHTML = `${d}d : ${h}h : ${m}m : ${s}s`;
         }, 1000);
     }
 
-    startPrivateBookingTimer();
-
-    // Nav Fix
-    const navLinks = document.querySelectorAll('.nav-links a');
-    const menuToggle = document.getElementById('menu-toggle');
+    // Navigation Logic
     const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-links a');
 
     const showSection = (id) => {
         const targetId = id.replace('#', '') || 'home';
-        sections.forEach(sec => {
-            sec.style.display = (sec.id === targetId) ? 'block' : 'none';
-        });
-        navLinks.forEach(link => {
-            link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
-        });
+        sections.forEach(sec => sec.style.display = (sec.id === targetId) ? 'block' : 'none');
+        navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`));
     };
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            if(menuToggle) menuToggle.checked = false;
-        });
-    });
-
-    window.addEventListener('popstate', () => {
-        showSection(window.location.hash);
-    });
-
-    window.onload = () => {
-        showSection(window.location.hash);
-    };
+    window.addEventListener('popstate', () => showSection(window.location.hash));
+    showSection(window.location.hash);
 
 });
-
-
-
-
-
-
-
-
